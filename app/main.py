@@ -26,3 +26,13 @@ app.include_router(api_router, prefix=settings.API_V1_STR)
 @app.get("/", tags=["Health"])
 def health_check():
     return {"status": "online", "project": settings.PROJECT_NAME}
+
+
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+
+@app.get("/ui")
+def serve_ui():
+    return FileResponse("app/static/index.html")
