@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document AI Extractor</title>
+    <style>
+        body { font-family: Arial; padding: 20px; max-width: 800px; margin: auto; }
+        textarea { width: 100%; height: 150px; margin-bottom: 10px; }
+        button { padding: 10px 20px; background: blue; color: white; border: none; cursor: pointer; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; }
+    </style>
+</head>
+<body>
+    <h1>Document AI Extractor</h1>
+    <p>Paste your messy invoice text below:</p>
+    <textarea id="invoiceText">Invoice #INV-2026-99. Date: Nov 24. Bill to: Evision Corp. Total Amount Due: 45,000 PKR.</textarea>
+    <button onclick="extractData()">Extract Data</button>
+    <h3>AI Output (JSON):</h3>
+    <pre id="output">Waiting for input...</pre>
+
+    <script>
+        async function extractData() {
+            const text = document.getElementById('invoiceText').value;
+            const output = document.getElementById('output');
+            output.innerText = "Extracting...";
+
+            const response = await fetch('/api/v1/extract', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ raw_text: text })
+            });
+            const data = await response.json();
+            output.innerText = JSON.stringify(data, null, 2);
+        }
+    </script>
+</body>
+</html>
